@@ -30,6 +30,6 @@ model.compile(
     metrics=["accuracy"]
 )
 
-model.fit(x_train, y_train_cat, batch_size=24, epochs=7, validation_split=0.2)
+model.fit(x_train, y_train_cat, batch_size=48, epochs=7, validation_split=0.2)
 
 model.save("test_model.keras")

@@ -16,15 +16,15 @@ x_test = x_test / normalize
 y_train_cat = keras.utils.to_categorical(y_train, 10)
 y_test_cat = keras.utils.to_categorical(y_test, 10)
 
-model = keras.models.load_model("model.keras")
+model = keras.models.load_model("test_model.keras")
 
-# n = 3
-# x = np.expand_dims(x_test[n], axis=0)
-# res = model.predict(x)
-# print(res)
-# print("Распознанная цифра:", np.argmax(res))
-# plt.imshow(x_test[n], cmap=plt.cm.binary)
-# plt.show()
+n = 3
+x = np.expand_dims(x_test[n], axis=0)
+res = model.predict(x)
+print(res)
+print("Распознанная цифра:", np.argmax(res))
+plt.imshow(x_test[n], cmap=plt.cm.binary)
+plt.show()
 
 predictions = model.predict(x_test)
 predictions = np.argmax(predictions, axis=1)
@@ -33,9 +33,18 @@ mask = ~(predictions == y_test)
 
 x_false, predict_false = x_test[mask], predictions[mask]
 
+for i in range(5):
+    print("Сеть распознала цифру:", predict_false[i])
+    plt.imshow(x_false[i], plt.cm.binary)
+    plt.show()
+
+mask = (predictions == y_test)
+
+x_true, predict_true = x_test[mask], predictions[mask]
+
 print(x_false.shape)
 
-# for i in range(5):
-#     print("Сеть распознала цифру:", predict_false[i])
-#     plt.imshow(x_false[i], plt.cm.binary)
-#     plt.show()
+for i in range(5):
+    print("Сеть распознала цифру:", predict_true[i])
+    plt.imshow(x_true[i], plt.cm.binary)
+    plt.show()

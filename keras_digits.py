@@ -25,11 +25,13 @@ model = keras.Sequential([
 ])
 
 model.compile(
-    optimizer="adam",
     loss="categorical_crossentropy",
     metrics=["accuracy"]
 )
 
-model.fit(x_train, y_train_cat, batch_size=48, epochs=7, validation_split=0.2)
+history = model.fit(x_train, y_train_cat, batch_size=48, epochs=7, validation_split=0.2)
+
+plt.plot(history.history['loss'])
+plt.show()
 
 model.save("test_model.keras")

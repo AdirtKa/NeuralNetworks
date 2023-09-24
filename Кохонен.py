@@ -14,16 +14,22 @@ def linalg(x, y):
 
 class KohonenNetwork:
     def __init__(self, input_size, output_size, learning_rate=0.5):
-        self.weights = np.random.random((output_size, input_size))
+        self.weights = np.append((np.random.random((output_size, input_size))), np.zeros((1, input_size)), axis=0)
+        print(self.weights)
+        print(np.zeros((1, input_size)))
+        # self.wrong_weights = np.append(np.zeros((output_size, 1)), np.ones(output_size, 1))
         # self.weights = np.array([[0, 0.3, 0.1, 0.9], [0.1, 0.5, 0.9, 0.1]])
         self.learning_rate = learning_rate
         self.decrease = 0.05
         self.history = []
+        self.winner_history = [[] for _ in range(len(self.weights))]
 
     def find_winner(self, x):
         distances = [linalg(x, i) for i in self.weights]
+        winner = np.argmin(distances)
         self.history.append(distances)
-        return np.argmin(distances)
+        self.winner_history[winner].append(distances[winner])
+        return winner
 
     def train(self, X):
         while self.learning_rate > 0:
@@ -92,4 +98,9 @@ history = np.array(nn.history).T
 
 plt.plot(history[0], label="Нейрон1")
 plt.plot(history[1], label="Нейрон1")
+plt.show()
+
+winner_history = nn.winner_history
+plt.plot(winner_history[0], label="Нейрон1")
+plt.plot(winner_history[1], label="Нейрон2")
 plt.show()

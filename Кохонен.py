@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from random import choice, randint
 
 
 np.set_printoptions(suppress=True)
@@ -14,29 +15,24 @@ def linalg(x, y):
 
 class KohonenNetwork:
     def __init__(self, input_size, output_size, learning_rate=0.5):
-        self.weights = np.append((np.random.random((output_size, input_size))), np.zeros((1, input_size)), axis=0)
-        print(self.weights)
-        print(np.zeros((1, input_size)))
-        # self.wrong_weights = np.append(np.zeros((output_size, 1)), np.ones(output_size, 1))
-        # self.weights = np.array([[0, 0.3, 0.1, 0.9], [0.1, 0.5, 0.9, 0.1]])
+        self.weights = (np.random.random((output_size, input_size)))
         self.learning_rate = learning_rate
         self.decrease = 0.05
         self.history = []
         self.winner_history = [[] for _ in range(len(self.weights))]
 
     def find_winner(self, x):
-        distances = [linalg(x, i) for i in self.weights]
-        winner = np.argmin(distances)
-        self.history.append(distances)
-        self.winner_history[winner].append(distances[winner])
+        self.distances = [linalg(x, i) for i in self.weights]
+        winner = np.argmin(self.distances)
         return winner
 
     def train(self, X):
         while self.learning_rate > 0:
             for x in X:
                 winner = self.find_winner(x)
+                self.history.append(self.distances)
+                self.winner_history[winner].append(self.distances[winner])
                 self.weights[winner] += self.learning_rate * (x - self.weights[winner])
-                #print(self.weights, end="\n\n")
             self.learning_rate -= self.decrease
 
     def predict(self, X):
@@ -63,14 +59,15 @@ letter_c = np.array([
 letters = np.append(letter_a, letter_c, axis=0)
 
 
-
-
-X = np.array([
-    [1, 0, 0, 1],
-    [0, 1, 1, 0],
-    [1, 1, 0, 0],
-    [0, 0, 1, 1],
+some_letters = np.array([
+   choice(letters) for _ in range(5)
 ])
+
+some_randoms = np.array([
+    [randint(0, 1) for _ in range(15)] for _ in range(5)
+])
+
+some_inputs = np.append(some_letters, some_randoms, axis=0)
 
 nn = KohonenNetwork(15, 2, 0.5)
 nn.train(letters)
@@ -86,12 +83,13 @@ prediction_weights = {
     "c": prediction[1],
 }
 
-a = letter_a[3]
-a_predict = nn.predict(np.array([a]))
+predicts = nn.predict(some_inputs)
 
-for k, v in prediction_weights.items():
-    if all(v == a_predict[0]):
-        print(k)
+for predict in predicts:
+    for k, v in prediction_weights.items():
+        if all(v == predict):
+            print(k)
+            break
 
 history = np.array(nn.history).T
 

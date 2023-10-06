@@ -16,21 +16,15 @@ class NeuralNetwork:
         self.biases_hidden_output = np.zeros((1, output_size))
 
     def relu(self, x):
-        return np.array([
-            [max(0, num) for num in line] for line in x
-        ])
-
-    def sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
+        return np.maximum(0, x)
 
     def softmax(self, x):
-        exp_x = np.exp(x - np.max(x))
-        return exp_x / exp_x.sum(axis=0, keepdims=True)
+        exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))
+        return exp_x / exp_x.sum(axis=1, keepdims=True)
 
     def forward(self, x):
         self.hidden_layer_input = np.dot(x, self.weights_input_hidden) + self.biases_input_hidden
-        print(self.hidden_layer_input)
-        self.hidden_layer_output = self.sigmoid(self.hidden_layer_input)
+        self.hidden_layer_output = self.relu(self.hidden_layer_input)
         self.output_layer_input = np.dot(self.hidden_layer_output, self.weights_hidden_output) + self.biases_hidden_output
         self.output_layer_output = self.softmax(self.output_layer_input)
 
@@ -39,7 +33,7 @@ class NeuralNetwork:
 
     def backward(self, x, y):
         d_output = self.output_layer_output - y
-        d_hidden = np.dot(d_output, self.weights_hidden_output.T) * (self.hidden_layer_output * (1 - self.hidden_layer_output))
+        d_hidden = np.dot(d_output, self.weights_hidden_output.T) * (self.hidden_layer_output > 0)
 
         self.weights_hidden_output -= self.learning_rate * np.dot(self.hidden_layer_output.T, d_output)
         self.biases_hidden_output -= self.learning_rate * np.sum(d_output, axis=0, keepdims=True)

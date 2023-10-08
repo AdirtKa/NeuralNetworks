@@ -1,5 +1,5 @@
 import numpy as np
-import mnist
+from tensorflow.keras.datasets import mnist
 import matplotlib.pyplot as plt
 
 class NeuralNetwork:

@@ -35,6 +35,7 @@ class NeuralNetwork:
 
 
         self.external_weights += np.dot(self.hidden_activate.T, external_delta) * external_delta
+        self.external_bias += np.sum()
     
     def train(self, input_data, answers, epochs):
         for _ in range(epochs):

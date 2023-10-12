@@ -1,5 +1,9 @@
+import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = '2'
+
+from tensorflow import keras
 import numpy as np
-from tensorflow.keras.datasets import mnist
+import mnist
 import matplotlib.pyplot as plt
 
 class NeuralNetwork:
@@ -44,7 +48,7 @@ class NeuralNetwork:
         for epoch in range(num_epochs):
             self.forward(x)
             loss = self.compute_loss(y)
-            print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {loss}")
+            print(f"Epoch {epoch + 1}/{num_epochs}")
             self.backward(x, y)
 
     def evaluate(self, x, y):
@@ -52,19 +56,15 @@ class NeuralNetwork:
         predictions = np.argmax(self.output_layer_output, axis=1)
         accuracy = np.mean(predictions == np.argmax(y, axis=1))
         return accuracy
+    
 
-if __name__ == "__main__":
+def get_model():
+    
     train_images = mnist.train_images()
     train_labels = mnist.train_labels()
-    test_images = mnist.test_images()
-    test_labels = mnist.test_labels()
-
     train_images = train_images / 255.0
-    test_images = test_images / 255.0
-
     num_classes = 10
     train_labels = np.eye(num_classes)[train_labels]
-    test_labels = np.eye(num_classes)[test_labels]
 
     input_size = 784
     hidden_size = 64
@@ -72,8 +72,42 @@ if __name__ == "__main__":
     learning_rate = 0.1
     num_epochs = 10
 
+
     model = NeuralNetwork(input_size, hidden_size, output_size, learning_rate)
     model.train(train_images.reshape(-1, input_size), train_labels, num_epochs)
 
-    test_accuracy = model.evaluate(test_images.reshape(-1, input_size), test_labels)
-    print(f"Accuracy on test data: {test_accuracy}")
+    return model
+
+
+if __name__ == "__main__":
+    model = get_model()
+    model = keras.models.load_model("model.keras")
+
+
+    x_test = mnist.test_images()
+    y_test = mnist.test_labels()
+    x_test = x_test / 255.0
+
+    predictions = model.predict(x_test)
+    predictions = model.predict(x_test)
+    predictions = np.argmax(predictions, axis=1)
+
+    mask = ~(predictions == y_test)
+
+    x_false, predict_false = x_test[mask], predictions[mask]
+
+    for i in range(-4, -1):
+        plt.title(f"Сеть распознала цифру: {predict_false[i]}")
+        plt.imshow(x_false[i], plt.cm.binary)
+        plt.show()
+
+    mask = (predictions == y_test)
+
+
+    x_true, predict_true = x_test[mask], predictions[mask]
+
+
+    for i in range(-4, -1):
+        plt.title(f"Сеть распознала цифру: {predict_true[i]}")
+        plt.imshow(x_true[i], plt.cm.binary)
+        plt.show()

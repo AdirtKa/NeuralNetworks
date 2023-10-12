@@ -25,8 +25,8 @@ mask = ~(predictions == y_test)
 
 x_false, predict_false = x_test[mask], predictions[mask]
 
-for i in range(3):
-    print("Сеть распознала цифру:", predict_false[i])
+for i in range(5, 9, 2):
+    plt.title(f"Сеть распознала цифру: {predict_false[i]}")
     plt.imshow(x_false[i], plt.cm.binary)
     plt.show()
 
@@ -36,7 +36,7 @@ mask = (predictions == y_test)
 x_true, predict_true = x_test[mask], predictions[mask]
 
 
-for i in range(3):
-    print("Сеть распознала цифру:", predict_true[i])
+for i in range(5, 9, 2):
+    plt.title(f"Сеть распознала цифру: {predict_true[i]}")
     plt.imshow(x_true[i], plt.cm.binary)
     plt.show()

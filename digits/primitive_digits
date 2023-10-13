@@ -1,0 +1,55 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+class NeuralNetwork:
+    def __init__(self, input_size: int, output_size: int) -> None:
+        self.neural_weights = np.random.random((input_size, output_size))
+        self.learning_rate = 0.3
+        self.locale_errors = []
+        self.epoch_errors = []
+        self.neural_delta = 0
+
+    @staticmethod
+    def __sigmoid(x: float, derive=False) -> np.array:
+        if derive:
+            return x * (1 - x)
+        return 1 / (1 + np.exp(-x))
+
+    def __activation(self, x: float, derive=False) -> np.array:
+        return self.__sigmoid(x, derive)
+
+    def __forward(self, x: np.array) -> np.array:
+        neural_sum = x.dot(self.neural_weights)
+        return self.__activation(neural_sum)
+
+    def train(self, input_func: np.array, output_func: np.array, epoch: int) -> None:
+        for _ in range(epoch):
+            for i, x in enumerate(input_func):
+                neural_output = self.__forward(x)
+                self.locale_errors.append(output_func[i] - neural_output)
+                # self.neural_delta = self.locale_errors[i] * self.__activation(neural_output, True)
+                self.neural_weights += self.learning_rate * self.locale_errors[i] # * self.neural_delta
+            self.epoch_errors.append(np.mean(self.locale_errors))
+            self.locale_errors.clear()
+
+    def predict(self, input_x: np.array) -> np.array:
+        predictions = []
+        for x in input_x:
+            predictions.append(self.__forward(x))
+        return np.array(predictions)
+
+
+x_1 = np.array([[0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1], [0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1], [0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+               [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1]])
+y_1 = np.array([[1], [1], [1], [1], [0], [0], [0], [0]])
+
+nn = NeuralNetwork(15,  1)
+nn.train(x_1, y_1, epoch=10000)
+
+# print("Прогнозы:")
+# print(nn.predict(x_1))
+
+plt.plot(nn.epoch_errors)
+plt.show()

@@ -82,6 +82,10 @@ def get_model():
 if __name__ == "__main__":
     model = get_model()
     model = keras.models.load_model("model.keras")
+    history = model.history["loss"]
+
+    plt.plot(history)
+    plt.show
 
 
     x_test = mnist.test_images()

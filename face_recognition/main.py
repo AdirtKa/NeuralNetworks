@@ -4,7 +4,7 @@ from time import sleep
 def face_capture():
     cascade_path = r"E:\Projects\NeuralNetworks\face_recognition\haarcascade_frontalface_default.xml"
 
-    input_path = r"E:\Projects\NeuralNetworks\face_recognition\1.jpg"   
+    input_path = r"E:\Projects\NeuralNetworks\face_recognition\1.mp4"   
 
     clf = cv2.CascadeClassifier(cascade_path)
     camera = cv2.VideoCapture(input_path)

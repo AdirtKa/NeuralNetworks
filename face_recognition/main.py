@@ -1,11 +1,11 @@
 import cv2
-
+from time import sleep
 
 def face_capture():
-    cascade_path = "face_recognition\haarcascade_frontalface_default.xml"
+    cascade_path = r"D:\Projects\NeuralNetworks\face_recognition\haarcascade_frontalface_default.xml"
 
     clf = cv2.CascadeClassifier(cascade_path)
-    camera = cv2.VideoCapture("face_recognition\1.jpg")
+    camera = cv2.VideoCapture(0)
 
     while True:
         _, frame = camera.read()
@@ -26,9 +26,12 @@ def face_capture():
 
         if cv2.waitKey(1) == ord('q'):
             break
+
+        sleep(0.01)
+
         
-        camera.release()
-        cv2.destroyAllWindows()
+    camera.release()
+    cv2.destroyAllWindows()
 
 def main():
     face_capture()

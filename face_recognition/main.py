@@ -2,14 +2,16 @@ import cv2
 from time import sleep
 
 def face_capture():
-    cascade_path = r"E:\Projects\NeuralNetworks\face_recognition\haarcascade_frontalface_default.xml"
+    cascade_path = r"D:\Projects\NeuralNetworks\face_recognition\haarcascade_frontalface_default.xml"
+    cascade_path = r"D:\Projects\NeuralNetworks\face_recognition\haarcascade_eye.xml"
 
-    input_path = r"E:\Projects\NeuralNetworks\face_recognition\1.mp4"   
+    #input_path = r"D:\Projects\NeuralNetworks\face_recognition\1.mp4"   
+    input_path = 0
 
     clf = cv2.CascadeClassifier(cascade_path)
     camera = cv2.VideoCapture(input_path)
 
-    if input_path.endswith(('.jpg', '.jpeg', '.png', '.bmp')):
+    if isinstance(input_path, str) and input_path.endswith(('.jpg', '.jpeg', '.png', '.bmp')):
         frame = cv2.imread(input_path)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = clf.detectMultiScale(

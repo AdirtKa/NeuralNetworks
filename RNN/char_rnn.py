@@ -28,7 +28,7 @@ n = data.shape[0] - input_chars
 X = np.array([data[i:i + input_chars, :] for i in range(n)])
 Y = data[input_chars:]
 
-print(data.shape)
+# print(data.shape)
 def train_model():
     model = Sequential()
 
@@ -43,7 +43,7 @@ def train_model():
 
     model.save(r"RNN\char_model.keras")
 
-train_model()
+# train_model()
 model = load_model(r"RNN\char_model.keras")
 
 def build_phrase(prefix, str_length):

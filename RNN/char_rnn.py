@@ -14,12 +14,12 @@ with open(r'RNN\text.txt', 'r', encoding='utf-8') as f:
     text = f.read()
     text = text.replace('\ufeff', '').replace('\n', ' ')  # убираем первый невидимый символ
     text = re.sub(r'[^А-я ]', '', text)  # заменяем все символы кроме кириллицы на пустые символы
-    print(text)
+    # print(text)
 
 num_characters = 34
 tokenizer = Tokenizer(num_characters, char_level=True)
 tokenizer.fit_on_texts([text])
-print(tokenizer.word_index)
+# print(tokenizer.word_index)
 
 input_chars = 6
 data  = tokenizer.texts_to_matrix(text)
@@ -43,7 +43,7 @@ def train_model():
 
     model.save(r"RNN\another_char_model.keras")
 
-# train_model()
+train_model()
 model = load_model(r"RNN\another_char_model.keras")
 
 def build_phrase(prefix, str_length):

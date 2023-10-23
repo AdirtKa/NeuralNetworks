@@ -8,7 +8,7 @@ from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.preprocessing.text import Tokenizer, text_to_word_sequence
 from tensorflow.keras.utils import to_categorical
 
-with open(r'RNN\phrase.txt', 'r', encoding='utf-8') as f:
+with open(r'RNN\text.txt', 'r', encoding='utf-8') as f:
     texts = f.read()
     tetxts = texts.replace('\ufeff', '').replace('\n', ' ')
 
@@ -41,10 +41,10 @@ def train():
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     history = model.fit(X, Y, epochs=100, batch_size=32)
 
-    model.save(r"RNN\word_model.keras")
+    model.save(r"RNN\another_word_model.keras")
 
 # train()
-model = load_model(r"RNN\word_model.keras")
+model = load_model(r"RNN\another_word_model.keras")
 
 
 def build_phrase(texts, str_length):
@@ -62,6 +62,6 @@ def build_phrase(texts, str_length):
 
     return  result
 
-# res = build_phrase("Любовь сама выросла ", 50)
-res = build_phrase("Поверь мне все ", 50)
+res = build_phrase("Любовь сама выросла ", 50)
+# res = build_phrase("Поверь мне все ", 50)
 print(res)

@@ -10,7 +10,7 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.models import load_model
 
 
-with open(r'RNN\phrase.txt', 'r', encoding='utf-8') as f:
+with open(r'RNN\text.txt', 'r', encoding='utf-8') as f:
     text = f.read()
     text = text.replace('\ufeff', '').replace('\n', ' ')  # убираем первый невидимый символ
     text = re.sub(r'[^А-я ]', '', text)  # заменяем все символы кроме кириллицы на пустые символы
@@ -43,8 +43,9 @@ def train_model():
 
     model.save(r"RNN\char_model.keras")
 
-# train_model()
-model = load_model(r"RNN\char_model.keras")
+train_model()
+#model = load_model(r"RNN\char_model.keras")
+model = load_model(r"RNN\another_char_model.keras")
 
 def build_phrase(prefix, str_length):
     for i in range(str_length):
@@ -63,4 +64,4 @@ def build_phrase(prefix, str_length):
     return  prefix
 
 
-print(build_phrase("позор ", 50))
+print(build_phrase("только", 50))

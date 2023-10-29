@@ -3,9 +3,9 @@ import cv2
                   
 def face_capture():
     cascade_path = r'face_recognition\haarcascade_frontalface_default.xml'
-    cascade_path = r'face_recognition\haarcascade_eye.xml'
+    # cascade_path = r'face_recognition\haarcascade_eye.xml'
     clf = cv2.CascadeClassifier(cascade_path)
-    camera = cv2.VideoCapture(r'face_recognition\1.mp4')
+    # camera = cv2.VideoCapture(r'face_recognition\1.mp4')
     camera = cv2.VideoCapture(0)
              
 
@@ -18,7 +18,7 @@ def face_capture():
                 scaleFactor = 1.1,
                 minNeighbors = 5,
                 minSize=(30,30),                       
-                flags = cv2.CASCADE_SCALE_IMAGE
+                # flags = cv2.CASCADE_SCALE_IMAGE
         )
         for (x,y,width,height) in faces:
                 cv2.rectangle(frame,(x,y),(x + width, y+height),(255,255,0), 2)

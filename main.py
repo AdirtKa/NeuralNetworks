@@ -36,7 +36,18 @@ mask = (predictions == y_test)
 x_true, predict_true = x_test[mask], predictions[mask]
 
 
-for i in range(5, 9, 2):
+for i in range(3):
+    plt.title(f"Сеть распознала цифру: {predict_true[i]}")
+    plt.imshow(x_true[i], plt.cm.binary)
+    plt.show()
+
+
+mask = (predictions == y_test)
+
+x_true, predict_true = x_test[~mask], predictions[~mask]
+
+
+for i in range(3):
     plt.title(f"Сеть распознала цифру: {predict_true[i]}")
     plt.imshow(x_true[i], plt.cm.binary)
     plt.show()

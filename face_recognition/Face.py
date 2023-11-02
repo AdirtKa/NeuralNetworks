@@ -28,8 +28,7 @@ def face_capture():
                 break                                                                 
     camera.release()
     cv2.destroyAllWindows()
-
-                                               
+                                         
 
 def main():
     face_capture()

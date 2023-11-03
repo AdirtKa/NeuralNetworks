@@ -76,7 +76,7 @@ x_true, predict_true = x_test[mask], predictions[mask]
 
 
 for i in range(3):
-    index = randint(0, 3000)
+    index = randint(0, 1000)
     plt.title(f"Сеть правильно распознала: {clothes[predict_true[index]]}")
     plt.imshow(x_true[index], plt.cm.binary)
     plt.show()
